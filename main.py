@@ -1,10 +1,32 @@
 import discord
 from discord.ext import commands
 import os
+import sys
+import logging
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+
+
+def configure_logging() -> None:
+    log_level_name = os.getenv('LOG_LEVEL', 'INFO').upper()
+    log_level = getattr(logging, log_level_name, logging.INFO)
+
+    logging.basicConfig(
+        level=log_level,
+        format='%(asctime)s | %(levelname)s | %(name)s | %(message)s',
+        stream=sys.stdout,
+        force=True,
+    )
+
+    # Keep discord internals quieter by default while preserving bot-level logs.
+    logging.getLogger('discord').setLevel(logging.INFO)
+    logging.getLogger('discord.http').setLevel(logging.WARNING)
+
+
+configure_logging()
+logger = logging.getLogger(__name__)
 
 # Bot configuration
 intents = discord.Intents.default()
@@ -16,13 +38,13 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 # Event: Bot is ready
 @bot.event
 async def on_ready():
-    print(f'{bot.user} has connected to Discord!')
-    print(f'Bot is in {len(bot.guilds)} guilds')
+    logger.info('%s has connected to Discord', bot.user)
+    logger.info('Bot is in %s guilds', len(bot.guilds))
     try:
         synced = await bot.tree.sync()
-        print(f'Synced {len(synced)} command(s)')
-    except Exception as e:
-        print(f'Failed to sync commands: {e}')
+        logger.info('Synced %s command(s)', len(synced))
+    except Exception:
+        logger.exception('Failed to sync commands')
 
 # Load cogs
 async def load_cogs():
@@ -30,9 +52,9 @@ async def load_cogs():
         if filename.endswith('.py') and filename != '__init__.py':
             try:
                 await bot.load_extension(f'cogs.{filename[:-3]}')
-                print(f'Loaded cog: {filename}')
-            except Exception as e:
-                print(f'Failed to load cog {filename}: {e}')
+                logger.info('Loaded cog: %s', filename)
+            except Exception:
+                logger.exception('Failed to load cog %s', filename)
 
 # Main function
 async def main():

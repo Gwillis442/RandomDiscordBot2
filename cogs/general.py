@@ -14,7 +14,7 @@ class General(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'General cog loaded')
+        logger.info('General cog loaded')
 
     # Slash command example
     @app_commands.command(name="ping", description="Check bot latency")

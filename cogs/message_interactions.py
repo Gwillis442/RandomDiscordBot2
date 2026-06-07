@@ -1,5 +1,9 @@
 import discord
 from discord.ext import commands
+from utils.helpers import random_number
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class MessageInteractions(commands.Cog):
@@ -14,7 +18,7 @@ class MessageInteractions(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("MessageInteractions cog loaded")
+        logger.info('MessageInteractions cog loaded')
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
@@ -36,6 +40,7 @@ class MessageInteractions(commands.Cog):
         if content in self.keyword_responses:
             await message.channel.send(self.keyword_responses[content])
             return
+        
 
         # Mention trigger example.
         if self.bot.user and self.bot.user in message.mentions:
@@ -44,6 +49,9 @@ class MessageInteractions(commands.Cog):
                 mention_author=False,
             )
 
+        # Fun random number trigger.
+        if random_number(0, 100) == 0:  # 5% chance to trigger on any message
+            await message.add_reaction("🎲")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(MessageInteractions(bot))

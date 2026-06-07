@@ -2,6 +2,9 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import random
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Fun(commands.Cog):
     def __init__(self, bot):
@@ -9,7 +12,7 @@ class Fun(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'Fun cog loaded')
+        logger.info('Fun cog loaded')
 
     @app_commands.command(name="roll", description="Roll a dice")
     @app_commands.describe(sides="Number of sides on the dice (default: 6)")
