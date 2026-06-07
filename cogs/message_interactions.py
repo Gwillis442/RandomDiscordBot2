@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from utils.helpers import random_number
 
 
 class MessageInteractions(commands.Cog):
@@ -36,6 +37,7 @@ class MessageInteractions(commands.Cog):
         if content in self.keyword_responses:
             await message.channel.send(self.keyword_responses[content])
             return
+        
 
         # Mention trigger example.
         if self.bot.user and self.bot.user in message.mentions:
@@ -44,6 +46,9 @@ class MessageInteractions(commands.Cog):
                 mention_author=False,
             )
 
+        # Fun random number trigger.
+        if random_number(99, 100) == 100:  # 5% chance to trigger on any message
+            await message.add_reaction("🎲")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(MessageInteractions(bot))
