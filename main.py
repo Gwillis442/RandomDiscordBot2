@@ -27,7 +27,7 @@ async def on_ready():
 # Load cogs
 async def load_cogs():
     for filename in os.listdir('./cogs'):
-        if filename.endswith('.py'):
+        if filename.endswith('.py') and filename != '__init__.py':
             try:
                 await bot.load_extension(f'cogs.{filename[:-3]}')
                 print(f'Loaded cog: {filename}')
@@ -36,9 +36,13 @@ async def load_cogs():
 
 # Main function
 async def main():
+    token = os.getenv('DISCORD_TOKEN') or os.getenv('discord_token')
+    if not token:
+        raise RuntimeError('Missing Discord token. Set DISCORD_TOKEN or discord_token in the environment.')
+
     async with bot:
         await load_cogs()
-        await bot.start(os.getenv('discord_token'))
+        await bot.start(token)
 
 if __name__ == '__main__':
     import asyncio

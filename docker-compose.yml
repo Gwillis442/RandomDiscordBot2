@@ -5,5 +5,7 @@ services:
     container_name: randomdiscordbot2
     restart: unless-stopped
     environment:
-      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      DISCORD_TOKEN: ${DISCORD_TOKEN:-}
+      discord_token: ${discord_token:-}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      gptApiKey: ${gptApiKey:-}
