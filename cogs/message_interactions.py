@@ -1,6 +1,9 @@
 import discord
 from discord.ext import commands
 from utils.helpers import random_number
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class MessageInteractions(commands.Cog):
@@ -15,7 +18,7 @@ class MessageInteractions(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("MessageInteractions cog loaded")
+        logger.info('MessageInteractions cog loaded')
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
