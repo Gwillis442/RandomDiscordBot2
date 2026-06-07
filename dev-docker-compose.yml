@@ -1,0 +1,11 @@
+services:
+  discord-bot:
+    image: ghcr.io/gwillis442/randomdiscordbot2:main
+    pull_policy: always
+    container_name: randomdiscordbot2-dev
+    restart: unless-stopped
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN:-}
+      discord_token: ${discord_token:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      gptApiKey: ${gptApiKey:-}
