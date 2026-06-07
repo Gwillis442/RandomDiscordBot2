@@ -22,6 +22,7 @@ class MessageInteractions(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
+        logger.debug('Received message', extra={'message_content': message.content, 'author': str(message.author), 'guild': str(message.guild)})
         # Ignore messages from bots (including this bot) to avoid loops.
         if message.author.bot:
             return
@@ -51,6 +52,7 @@ class MessageInteractions(commands.Cog):
 
         # Fun random number trigger.
         if random_number(0, 100) == 0:  # 1% chance to trigger on any message
+            logger.info('Bot reacted to message', extra={'message_content': message.content, 'author': str(message.author)})
             await message.add_reaction("👍")
             await message.add_reaction("👎")
 
