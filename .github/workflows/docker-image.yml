@@ -50,11 +50,23 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha
 
+      - name: Resolve Dockerfile path
+        id: dockerfile
+        run: |
+          if [ -f "./Dockerfile" ]; then
+            echo "path=./Dockerfile" >> "$GITHUB_OUTPUT"
+          elif [ -f "./DockerFile" ]; then
+            echo "path=./DockerFile" >> "$GITHUB_OUTPUT"
+          else
+            echo "No Dockerfile found (checked ./Dockerfile and ./DockerFile)."
+            exit 1
+          fi
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile
+          file: ${{ steps.dockerfile.outputs.path }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
