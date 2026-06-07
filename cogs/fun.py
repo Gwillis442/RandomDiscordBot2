@@ -39,5 +39,25 @@ class Fun(commands.Cog):
         ]
         await interaction.response.send_message(f'🎱 {random.choice(responses)}')
 
+    @app_commands.command(name="ship", description="Calculate the compatibility between two names")
+    @app_commands.describe(name1="First person", name2="Second person")
+    async def ship(self, interaction: discord.Interaction, name1: str, name2: str):
+        pair_key = ''.join(sorted([name1.strip().lower(), name2.strip().lower()]))
+        seeded_rng = random.Random(pair_key)
+        compatibility = seeded_rng.randint(1, 100)
+
+        if compatibility >= 85:
+            verdict = 'Soulmates detected.'
+        elif compatibility >= 60:
+            verdict = 'Great match.'
+        elif compatibility >= 40:
+            verdict = 'There is potential.'
+        else:
+            verdict = 'This ship may need some work.'
+
+        await interaction.response.send_message(
+            f'💘 **{name1} + {name2}** = **{compatibility}%**\n{verdict}'
+        )
+
 async def setup(bot):
     await bot.add_cog(Fun(bot))
