@@ -1,9 +1,7 @@
 services:
   discord-bot:
-    build:
-      context: .
-      dockerfile: DockerFile
-    image: gwillis442/randomdiscordbot2:latest
+    image: ghcr.io/gwillis442/randomdiscordbot2:main
+    pull_policy: always
     container_name: randomdiscordbot2
     restart: unless-stopped
     environment:
