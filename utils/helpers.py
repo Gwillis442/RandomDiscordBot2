@@ -47,3 +47,18 @@ def create_success_embed(message: str) -> discord.Embed:
         discord.Embed: Success embed with green color
     """
     return create_embed("Success", message, discord.Color.green())
+
+
+def random_number(min_value: int, max_value: int) -> int:
+    """
+    Generate a random number between min_value and max_value
+    
+    Args:
+        min_value: The minimum value (inclusive)
+        max_value: The maximum value (inclusive)
+    
+    Returns:
+        int: A random number between min_value and max_value
+    """
+    import random
+    return random.randint(min_value, max_value)
