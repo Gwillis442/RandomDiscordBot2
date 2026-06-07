@@ -50,7 +50,7 @@ class MessageInteractions(commands.Cog):
             )
 
         # Fun random number trigger.
-        if random_number(99, 100) == 100:  # 5% chance to trigger on any message
+        if random_number(0, 100) == 0:  # 5% chance to trigger on any message
             await message.add_reaction("🎲")
 
 async def setup(bot: commands.Bot):
