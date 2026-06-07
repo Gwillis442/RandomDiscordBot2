@@ -1,6 +1,6 @@
 services:
   discord-bot:
-    image: ghcr.io/gwillis442/randomdiscordbot2:main
+    image: ghcr.io/gwillis442/randomdiscordbot2-dev:dev
     pull_policy: always
     container_name: randomdiscordbot2-dev
     restart: unless-stopped
