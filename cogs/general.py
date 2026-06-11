@@ -40,14 +40,17 @@ class General(commands.Cog):
         embed.add_field(name="Users", value=len(self.bot.users), inline=True)
         await ctx.send(embed=embed)
 
-    # AI command using OpenAI API
+    # AI command using configurable AI provider (OpenAI or Ollama)
     @app_commands.command(name="ask_ai", description="Ask the AI a question")
     @app_commands.describe(question="Your question for the AI")
     async def ask_ai(self, interaction: discord.Interaction, question: str):
         await interaction.response.defer()
+        provider = (os.getenv('AI_PROVIDER') or 'openai').lower()
         api_key = os.getenv('OPENAI_API_KEY') or os.getenv('gptApiKey')
+        model = os.getenv('AI_MODEL')
+        ollama_base_url = os.getenv('OLLAMA_BASE_URL')
 
-        if not api_key:
+        if provider == 'openai' and not api_key:
             await interaction.followup.send(
                 'AI is not configured. Add OPENAI_API_KEY or gptApiKey to your .env file and restart the bot.',
                 ephemeral=True,
@@ -55,12 +58,17 @@ class General(commands.Cog):
             return
 
         try:
-            ai_helper = AIHelper(api_key=api_key)
+            ai_helper = AIHelper(
+                provider=provider,
+                api_key=api_key,
+                base_url=ollama_base_url,
+                model=model,
+            )
             response = await asyncio.to_thread(ai_helper.generate_response, question)
         except Exception:
             logger.exception('ask_ai failed')
             await interaction.followup.send(
-                'AI request failed. Check the bot logs for the backend error and verify the OpenAI API key.',
+                f'AI request failed for provider "{provider}". Check bot logs and verify your AI backend settings.',
                 ephemeral=True,
             )
             return

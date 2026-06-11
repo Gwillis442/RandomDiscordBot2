@@ -38,11 +38,24 @@ A Discord bot built with Python and discord.py featuring slash commands and modu
    ```
 
 4. **Configure environment variables**
-   - Copy `.env.example` to `.env`
-   - Add your Discord bot token to the `.env` file:
+    - Create a `.env` file
+    - Add your Discord bot token to the `.env` file:
      ```
      DISCORD_TOKEN=your_actual_bot_token_here
      ```
+    - Configure AI backend (choose one):
+       - Local Ollama (default model example):
+          ```
+          AI_PROVIDER=ollama
+          OLLAMA_BASE_URL=http://localhost:11434/v1
+          AI_MODEL=llama3.1:8b
+          ```
+       - OpenAI:
+          ```
+          AI_PROVIDER=openai
+          OPENAI_API_KEY=your_openai_key
+          AI_MODEL=gpt-4o-mini
+          ```
 
 5. **Run the bot**
    ```bash
@@ -78,6 +91,25 @@ RandomDiscordBot2/
 
 ### Prefix Commands
 - `!info` - Get bot information
+
+## Ollama Quick Start
+
+1. Install Ollama from https://ollama.com/download
+2. Pull a model:
+   ```bash
+   ollama pull llama3.1:8b
+   ```
+3. Start Ollama server (if not already running):
+   ```bash
+   ollama serve
+   ```
+4. Ensure your `.env` has:
+   ```
+   AI_PROVIDER=ollama
+   OLLAMA_BASE_URL=http://localhost:11434/v1
+   AI_MODEL=llama3.1:8b
+   ```
+5. Start the bot and use `/ask_ai`.
 
 ## Adding New Commands
 
