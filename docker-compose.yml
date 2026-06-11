@@ -15,5 +15,8 @@ services:
       discord_token: ${discord_token:-}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       gptApiKey: ${gptApiKey:-}
+      AI_PROVIDER: ${AI_PROVIDER:-openai}
+      AI_MODEL: ${AI_MODEL:-}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       PYTHONUNBUFFERED: "1"
