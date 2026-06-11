@@ -2,12 +2,19 @@ from openai import OpenAI
 
 
 class AIHelper:
+    @staticmethod
+    def _normalize_ollama_base_url(base_url):
+        value = (base_url or "http://localhost:11434/v1").strip().rstrip("/")
+        if value.endswith("/v1"):
+            return value
+        return f"{value}/v1"
+
     def __init__(self, provider="openai", api_key=None, base_url=None, model=None):
         self.provider = (provider or "openai").lower()
 
         if self.provider == "ollama":
-            # Ollama exposes an OpenAI-compatible API at /v1 by default.
-            resolved_base_url = (base_url or "http://localhost:11434/v1").rstrip("/")
+            # Ollama exposes an OpenAI-compatible API under /v1.
+            resolved_base_url = self._normalize_ollama_base_url(base_url)
             resolved_api_key = api_key or "ollama"
             self.client = OpenAI(api_key=resolved_api_key, base_url=resolved_base_url)
             self.default_model = model or "llama3.1:8b"
